@@ -1,0 +1,4 @@
+name: filter
+version: '${version}'
+main: sh.astrid.filter.FilterPlugin
+api-version: '1.20'
