@@ -6,9 +6,9 @@ A port of the chat filter used on Airbrush ( originally created by [apple](https
 
 Install the plugin then head over to `/plugins/filter/config.toml`. Here you can manage your filter rules.
 
-`blockMessage` - The message to send to the player
-`command` (optional) - The command to run when this rule is triggered (supports the `{player}` placeholder)
-`file` - A path to a text file containing a new-line separated list of regex.
+`blockMessage` - The message to send to the player<br />
+`command` (optional) - The command to run when this rule is triggered (supports the `{player}` placeholder)<br />
+`file` - A path to a text file containing a new-line separated list of regex.<br />
 
 ### Example
 ```toml
