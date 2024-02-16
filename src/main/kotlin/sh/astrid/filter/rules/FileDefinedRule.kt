@@ -2,7 +2,6 @@ package sh.astrid.filter.rules
 
 import me.aroze.arozeutils.minecraft.generic.sync
 import org.bukkit.Bukkit
-import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 import sh.astrid.filter.FilterPlugin
 import sh.astrid.filter.data.FilterAction
@@ -43,14 +42,16 @@ class FileDefinedRule(private val filterConfig: FilterConfig) : FilterRule {
     }
 
     override fun apply(player: Player, message: String): FilterAction {
-        val matchedRules = validRules.filter { rule -> hasMatch(rule, message) }
+        val matchedRules = validRules.filter { rule -> hasMatch(rule, message).first }
 
         if (matchedRules.isEmpty())
             return FilterAction.ALLOW
 
-        val first = validRules.first()
+        val first = matchedRules.first()
         val blockMessage = first.blockMessage ?: filterConfig.root.blockMessage
         val command = first.command
+
+        FilterPlugin.instance.logger.info("${player.name} said \"$message\". Triggered from regex \"${hasMatch(first, message).second}\".")
 
         if(command !== null) {
             val cmd = command.replace("{player}", player.name)
@@ -63,17 +64,19 @@ class FileDefinedRule(private val filterConfig: FilterConfig) : FilterRule {
         return first.action ?: FilterAction.BLOCK
     }
 
-    private fun hasMatch(rule: FilterConfig.RuleDefinition, message: String): Boolean {
+    private fun hasMatch(rule: FilterConfig.RuleDefinition, message: String):  Pair<Boolean, String?> {
         return when {
             rule.pattern != null -> {
                 val regex = Regex(rule.pattern)
-                regex.containsMatchIn(message)
+                val matchResult = regex.find(message)
+                Pair(matchResult != null, matchResult?.value)
             }
             rule.file != null -> {
                 val list = parsedPatternLists[rule]?.patterns
-                list.orEmpty().any { pattern -> pattern.containsMatchIn(message) }
+                val matchedPatterns = list.orEmpty().filter { pattern -> pattern.containsMatchIn(message) }
+                matchedPatterns.isNotEmpty() to matchedPatterns.joinToString(", ") { it.pattern }
             }
-            else -> false
+            else -> Pair(false, null)
         }
     }
 

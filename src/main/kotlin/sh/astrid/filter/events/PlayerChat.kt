@@ -5,8 +5,8 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerChatEvent
 import sh.astrid.filter.FilterManager
-import sh.astrid.filter.FilterPlugin
 
+@Suppress("unused")
 object PlayerChat : Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     fun chatEvent(event: AsyncPlayerChatEvent) {
@@ -16,6 +16,5 @@ object PlayerChat : Listener {
         if(!FilterManager.shouldBlock(player, msg)) return
 
         event.isCancelled = true
-        FilterPlugin.instance.logger.info("${player.name} said \"$msg\".")
     }
 }
