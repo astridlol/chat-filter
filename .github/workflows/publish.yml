@@ -25,4 +25,4 @@ jobs:
             tag_name: release-${{ github.sha }}
             release_name: Release ${{ github.sha }}
             prerelease: false
-            files: ./build/libs/filter-1.0-all.jar
+            files: build/libs/filter-1.0-all.jar
