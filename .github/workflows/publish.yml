@@ -17,7 +17,7 @@ jobs:
         with:
           workflow: build.yml
           name: ${{ github.event.repository.name }}.jar
-          path: build/libs/filter-1.0-all.jar
+          path: build/libs/*.jar
 
       - name: Create Release
         uses: marvinpinto/action-automatic-releases@latest
@@ -25,4 +25,4 @@ jobs:
             tag_name: release-${{ github.sha }}
             release_name: Release ${{ github.sha }}
             prerelease: false
-            files: build/libs/filter-1.0-all.jar
+            files: build/libs/*.jar

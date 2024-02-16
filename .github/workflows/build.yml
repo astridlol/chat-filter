@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - "main"
-    paths:
-      - "src/**"
 
 jobs:
   build:
@@ -25,11 +23,11 @@ jobs:
           gradle-version: release-candidate
 
       - name: Build with Gradle
-        run: gradle build
+        run: gradle shadowJar
 
       - name: Archive Jar Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.repository.name }}.jar
-          path: build/libs/filter-1.0-all.jar
+          path: build/libs/*.jar
           retention-days: 1
