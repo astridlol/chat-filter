@@ -22,6 +22,7 @@ jobs:
       - name: Create Release
         uses: marvinpinto/action-automatic-releases@latest
         with:
+            repo_token: "${{ secrets.GITHUB_TOKEN }}"
             tag_name: release-${{ github.sha }}
             release_name: Release ${{ github.sha }}
             prerelease: false
